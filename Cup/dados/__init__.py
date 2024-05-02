@@ -32,7 +32,7 @@ def iTabelas(Lista):
         print(f'POTE {c} |')
         for k in Lista[f'iGrupoP{c}']:
             print(k)
-            # sleep(0.5)
+            sleep(0.5)
 
 
 def iGrupo(iSelecao):
