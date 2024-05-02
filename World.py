@@ -4,6 +4,5 @@ dados.iSelecao()
 
 while True:
     iEscolha = str(input('Escolha a sua selecao: ')).strip()
-    iEscolha
     if dados.iGrupo(iEscolha.capitalize()):
         break
