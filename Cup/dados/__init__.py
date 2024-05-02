@@ -9,9 +9,9 @@ iClassificao = {
 def iSelecao():
 
     iCopa = {
-        'iSelecoesP1': ['Qatar', 'Brasil', 'Argentina', 'Bélgica', 'Espanha', 'França', 'Inglaterra', 'Portugal'],
+        'iSelecoesP1': ['Qatar', 'Brasil', 'Argentina', 'Belgica', 'Espanha', 'França', 'Inglaterra', 'Portugal'],
         'iSelecoesP2': ['Alemanha', 'Croacia', 'Dinamarca', 'Estados Unidos', 'Holanda', 'Mexico', 'Suica', 'Uruguai'],
-        'iSelecoesP3': ['Coreia do Sul', 'Ira', 'Japão', 'Marrocos', 'Polonia', 'Senegal', 'Servia', 'Tunisia'],
+        'iSelecoesP3': ['Coreia do Sul', 'Ira', 'Japao', 'Marrocos', 'Polonia', 'Senegal', 'Servia', 'Tunisia'],
         'iSelecoesP4': ['Arábia Saudita', 'Camaroes', 'Canada', 'Equador', 'Gana', 'Italia', 'Paraguai', 'Croacia']}
 
     for k in range(1, 5):
