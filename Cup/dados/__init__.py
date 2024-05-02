@@ -9,16 +9,15 @@ iClassificao = {
 def iSelecao():
 
     iCopa = {
-        'iSelecoesP1': ['Qatar', 'Brasil', 'Argentina', 'Bélgica', 'Espanha', 'França', 'Inglaterra', 'Portugal'],
-        'iSelecoesP2': ['Alemanha', 'Croácia', 'Dinamarca', 'Estados Unidos', 'Holanda', 'México', 'Suíça', 'Uruguai'],
-        'iSelecoesP3': ['Coreia do Sul', 'Irã', 'Japão', 'Marrocos', 'Polônia', 'Senegal', 'Sérvia', 'Tunísia'],
-        'iSelecoesP4': ['Arábia Saudita', 'Camarões', 'Canadá', 'Equador', 'Gana', 'Italia', 'Paraguai', 'Croacia']}
+        'iSelecoesP1': ['Quatar', 'Brasil', 'Argentina', 'Bélgica', 'Espanha', 'França', 'Inglaterra', 'Portugal'],
+        'iSelecoesP2': ['Alemanha', 'Croacia', 'Dinamarca', 'Estados Unidos', 'Holanda', 'México', 'Suíça', 'Uruguai'],
+        'iSelecoesP3': ['Coreia do Sul', 'Ira', 'Japão', 'Marrocos', 'Polônia', 'Senegal', 'Sérvia', 'Tunísia'],
+        'iSelecoesP4': ['Arábia Saudita', 'Camarões', 'Canada', 'Equador', 'Gana', 'Italia', 'Paraguai', 'Croacia']}
 
     for k in range(1, 5):
         for c in range(1, 9):
             iEscolhido = choice(iCopa[f'iSelecoesP{k}'])
             iCopa[f'iSelecoesP{k}'].remove(iEscolhido)
-
             iClassificao[f'iGrupoP{c}'].append(iEscolhido)
 
     for c in range(1, 9):
@@ -46,17 +45,4 @@ def iGrupo(iSelecao):
                     continue
                 else:
                     print(f'{j}, ', end='')
-            break
-
-
-def iJogoCopa(iSelecao):
-    for k, v in iClassificao.items():
-        if iSelecao in v:
-            print(f'A Seleção do {iSelecao} esta no Grupo {k}', end='')
-            print(f' e enfrentará as selecoes: ', end='')
-            for k in v:
-                if iSelecao in k:
-                    continue
-                else:
-                    print(f'{k}, ', end='')
-            break
+            return True
