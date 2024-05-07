@@ -31,7 +31,7 @@ def iTabelas():
         print(f'POTE {c} |')
         for k in iClassificao[f'iGrupoP{c}']:
             print(k)
-            # sleep(0.5)
+            sleep(0.5)
 
 
 def iGrupo_Sel(iSelecao):
@@ -52,10 +52,12 @@ def iGrupo_Sel(iSelecao):
 def iGrupoCopa():
     Placar1 = 0
     Placar2 = 0
-    while True:
-        for c in range(1, 9):
-            print(f'Jogos do Grupo {c}')
-            Sel_Principal = iClassificao[f'iGrupoP{c}'][0]
+    Principal = list()
+    for c in range(1, 9):
+        print(f'Jogos do Grupo {c}')
+        Principal = iClassificao[f'iGrupoP{c}']
+        for v in range(0, 4):
+            Sel_Principal = Principal[v]
             for k in iClassificao[f'iGrupoP{c}']:
                 Placar1 = randint(1, 4)
                 Placar2 = randint(1, 4)
@@ -63,4 +65,4 @@ def iGrupoCopa():
                     continue
                 else:
                     print(f'{Sel_Principal} {Placar1} x {Placar2} {k}')
-        break
+                    sleep(0.5)
