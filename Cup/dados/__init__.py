@@ -1,4 +1,5 @@
-from random import choice
+from random import choice, randint
+from time import sleep
 
 iClassificao = {
     'iGrupoP1': [], 'iGrupoP2': [], 'iGrupoP3': [], 'iGrupoP4': [],
@@ -21,21 +22,19 @@ def iSelecao():
             iClassificao[f'iGrupoP{c}'].append(iEscolhido)
 
     for c in range(1, 9):
-        iTabelas(iClassificao)
+        iTabelas()
         break
 
 
-def iTabelas(Lista):
-    from time import sleep
-
+def iTabelas():
     for c in range(1, 9):
         print(f'POTE {c} |')
-        for k in Lista[f'iGrupoP{c}']:
+        for k in iClassificao[f'iGrupoP{c}']:
             print(k)
-            sleep(0.5)
+            # sleep(0.5)
 
 
-def iGrupo(iSelecao):
+def iGrupo_Sel(iSelecao):
     for k, v in iClassificao.items():
         if iSelecao in v:
             print(f'A Seleção do {iSelecao} esta no Grupo {k[7]}', end='')
@@ -45,4 +44,23 @@ def iGrupo(iSelecao):
                     continue
                 else:
                     print(f'{j}, ', end='')
+            print()
+            iGrupoCopa()
             return True
+
+
+def iGrupoCopa():
+    Placar1 = 0
+    Placar2 = 0
+    while True:
+        for c in range(1, 9):
+            print(f'Jogos do Grupo {c}')
+            Sel_Principal = iClassificao[f'iGrupoP{c}'][0]
+            for k in iClassificao[f'iGrupoP{c}']:
+                Placar1 = randint(1, 4)
+                Placar2 = randint(1, 4)
+                if Sel_Principal in k:
+                    continue
+                else:
+                    print(f'{Sel_Principal} {Placar1} x {Placar2} {k}')
+        break
