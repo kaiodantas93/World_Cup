@@ -36,7 +36,7 @@ iOitavas =  {
 #     'iSemifinais': [],
 #     'iFinal': []
 # }
-
+#
 
 def iSelecao():
     iCopa = {
