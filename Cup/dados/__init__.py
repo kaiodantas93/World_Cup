@@ -48,7 +48,6 @@ Prorrogacao_Placar1 = 0
 Prorrogacao_Placar2 = 0
 
 # Fase_Final = {
- 
 #     'iQuartas': [],
 #     'iSemifinais': [],
 #     'iFinal': []
@@ -374,37 +373,50 @@ def Fase_Final():
 def iPenalti(Selecao1, Selecao2, Fase):
     Penalti_Prorrogacao_Placar1 = 0
     Penalti_Prorrogacao_Placar2 = 0
-    Cont_Selecao1 = 0
-    Cont_Selecao2 = 0
+    Contador_Penalti = 5
     iChute_Selecao1 = 0
     iChute_Selecao2 = 0
-    iExibicao(Fase, "Penaltis:")
-    iSorteio = randint(1, 2)
+    
+    for c in range(0,50):
+        if not iDiferenca(Penalti_Prorrogacao_Placar1, Penalti_Prorrogacao_Placar2, Contador_Penalti):
+            if Contador_Penalti == 0 and Penalti_Prorrogacao_Placar1 == Penalti_Prorrogacao_Placar2:
+                Contador_Penalti += 1
+            Contador_Penalti -= 1
+            if Contador_Penalti >= 0:
+                iChute_Selecao1 = ""
+                iChute_Selecao1 = choice([True, False])
+                if iChute_Selecao1 == True:
+                    iExibicao(Fase, f'{Selecao1}: Acertou')
+                    Penalti_Prorrogacao_Placar1 += 1
+                else:
+                    iExibicao(Fase, f'{Selecao1}: Errou')
 
-        
-    for c in range(0, 5):
-        if Cont_Selecao1 <= 5:
-            iChute_Selecao1 = 0
-            iChute_Selecao1 = choice([True, False])
-            Cont_Selecao1 += 1
-            if iChute_Selecao1 == True:
-                iExibicao(Fase, f'{Selecao1}: Acertou')
-                Penalti_Prorrogacao_Placar1 += 1
-            else:
-                iExibicao(Fase, f'{Selecao1}: Errou')
-
-        if Cont_Selecao2 <= 5:
-            iChute_Selecao2 = 0
-            iChute_Selecao2 = ([True, False])
-            Cont_Selecao2 += 1
-            if iChute_Selecao2 == True:
-                iExibicao(Fase, f'{Selecao2}: Acertou')
-                Penalti_Prorrogacao_Placar2 += 1
-            else:
-                iExibicao(Fase, f'{Selecao2}: Errou')
+            if Contador_Penalti >= 0:
+                iChute_Selecao2 = ""
+                iChute_Selecao2 = choice([True, False])
+                if iChute_Selecao2 == True:
+                    iExibicao(Fase, f'{Selecao2}: Acertou')
+                    Penalti_Prorrogacao_Placar2 += 1
+                else:
+                    iExibicao(Fase, f'{Selecao2}: Errou')
+        else:
+            break
         
     iExibicao(f'Jogos Oitavas', "Final:")
     Penalti_Rodada = (f'{Selecao1} {Penalti_Prorrogacao_Placar1} x {Penalti_Prorrogacao_Placar2} {Selecao2}')
     iExibicao(f'Jogos Oitavas', Penalti_Rodada)
+
+    
+def iDiferenca(Penalti_Prorrogacao_Placar1, Penalti_Prorrogacao_Placar2, Contador_Penalti):
+    Total = 0
+    if Penalti_Prorrogacao_Placar1 > Penalti_Prorrogacao_Placar2 :
+        Total = Penalti_Prorrogacao_Placar1 - Penalti_Prorrogacao_Placar2
+    if Penalti_Prorrogacao_Placar2 > Penalti_Prorrogacao_Placar1:
+        Total = Penalti_Prorrogacao_Placar2 - Penalti_Prorrogacao_Placar1
+        
+    if Total > Contador_Penalti:
+        return True
+    else:
+        return False
 
     
