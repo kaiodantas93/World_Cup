@@ -10,7 +10,7 @@ iCopa = {
 }
 
 class Menu: 
-    def __init__(self, opcao1="TABELA DE GRUPO", opcao2="SELECAO ESCOLHIDA", opcao3="ADVERSARIOS", opcao4="JOGOS DO GRUPO", opcao5="CLASSIFICAÇAO FINAL", opcao6="CLASSIFICADOS", opcao7="SEGUIR", opcao8="SAIR"):
+    def __init__(self, opcao1="TABELA DE GRUPO", opcao2="SELECAO ESCOLHIDA", opcao3="ADVERSARIOS", opcao4="JOGOS DO GRUPO", opcao5="CLASSIFICAÇAO FINAL", opcao6="CLASSIFICADOS", opcao7="OITAVAS DE FINAL", opcao8="SAIR"):
         self.opcoes = [opcao1, opcao2, opcao3, opcao4, opcao5, opcao6, opcao7, opcao8]
         self.iquant = len(self.opcoes)
         
@@ -32,12 +32,22 @@ Pontuacao_Grupo = {
 
 iClassificados =  {
     'iGrupoP1': [], 'iGrupoP2': [], 'iGrupoP3': [], 'iGrupoP4': [],
-    'iGrupoP5': [], 'iGrupoP6': [], 'iGrupoP7': [], 'iGrupoP8': []
+    'iGrupoP5': [], 'iGrupoP6': [], 'iGrupoP7': [], 'iGrupoP8': [],
+    'iOitavas': [], 'iQuartas': [], 'iSemifinais': [], 'iFinal': []
 }
 
-iOitavas =  []
-iJogos_Oitavas = {
-    'iJogos':[]
+Fase_Final = {
+    'iOitavas': [],
+    'iQuartas': [],
+    'iSemifinais': [],
+    'iFinal': []
+}
+
+iJogos_FaseFinal = {
+    'Jogos_Oitavas': [],
+    'Jogos_Quartas': [],
+    'Jogos_Semifinal': [],
+    'Jogos_Final': []
 }
 
 menu = Menu()
@@ -46,12 +56,6 @@ Placar1 = 0
 Placar2 = 0
 Prorrogacao_Placar1 = 0
 Prorrogacao_Placar2 = 0
-
-# Fase_Final = {
-#     'iQuartas': [],
-#     'iSemifinais': [],
-#     'iFinal': []
-# }
 
 
 def iSelecao():
@@ -71,7 +75,7 @@ def iTabelas():
         for k in iClassificacao[f'iGrupoP{c}']:
             iExibicao(f'Fase de Grupo {c}', k)
         sleep(1)
-        Imprime(f'Fase de Grupo {c}')
+        Imprime(f'Fase de Grupo {c}', 25)
 
 
 def iGrupo_Sel(iSelecaoEscolhida):
@@ -84,8 +88,8 @@ def iGrupo_Sel(iSelecaoEscolhida):
                         iExibicao("Selecao Escolhida", iSelecaoEscolhida)
                     else:                        
                         iExibicao("Proximos Adversários", k)
-                Imprime("Selecao Escolhida")             
-                Imprime("Proximos Adversários")
+                Imprime("Selecao Escolhida", 25)             
+                Imprime("Proximos Adversários", 25)
                 iGrupoCopa()
                 for c in range(menu.iquant):
                     iExibicao("MENU", f"{c+1}: {menu.opcoes[c]}")
@@ -93,7 +97,7 @@ def iGrupo_Sel(iSelecaoEscolhida):
                 if iOpcaoMenu() != 7:
                     return True
                 else:
-                    Fase_Final()
+                    MataMata_Final()
                     return True
 
 
@@ -127,7 +131,7 @@ def iGrupoCopa():
                         iOrganizaPontuacao(c)
                         iPartida = 0
             sleep(2)
-            Imprime(f'Jogos do Grupo {c}')
+            Imprime(f'Jogos do Grupo {c}', 40)
             break
     iApresenta()
     
@@ -223,7 +227,7 @@ def iApresenta():
             iPosicao += 1
             if iPosicao == 4:
                 break
-        Imprime(f'Classificacao {k}', 1)
+        Imprime(f'Classificacao {k}', 40, 1)
         
 
 
@@ -234,16 +238,21 @@ def iExibicao(Apresentacao, cliente):
         tabela[Apresentacao].append(cliente)
     
 
-def Imprime(Apresentacao, opcional=0):
+def Imprime(Apresentacao, iTamanho, opcional=0,):
     Mensagem = PrettyTable()
     iPosicao = 0
+
     for c in tabela[Apresentacao]:
         if opcional == 0:
             Mensagem.field_names = [Apresentacao]
             Mensagem.add_row([c])
+            Mensagem.max_width[Apresentacao] = iTamanho
+            Mensagem.align = "c"
         else:
             Mensagem.field_names = ["Classificação", "P", "V", "E", "D", "GP", "GC", "SG"]
             Mensagem.add_row([f"{iPosicao+1}: {c[0]}"] + c[1:])
+            Mensagem.max_width["Classificação", "P", "V", "E", "D", "GP", "GC", "SG"] = iTamanho
+            Mensagem.align = "l"
             iPosicao += 1
 
     print(Mensagem)
@@ -257,14 +266,14 @@ def iClass_Final(iGrupo):
         for k in range (0, 2):
             iClass = iClassificados[f'iGrupoP{iGrupo}'][k]
             iExibicao(f'Grupo {iGrupo}', iClass)
-        Imprime(f'Grupo {iGrupo}')
+        Imprime(f'Grupo {iGrupo}', 25)
         tabela[Apresentacao].clear()
         return True
 
 
 def iOpcaoMenu():
     iEscolha_Menu = 0
-    Imprime("MENU")
+    Imprime("MENU", 25)
     while True:
         iEscolha_Menu = input('Escolha a opcao desejada: ')
         try: 
@@ -275,19 +284,19 @@ def iOpcaoMenu():
                         while True:
                             iGrupo = input("Qual tabela de Grupos: ")
                             try:
-                                if Imprime(f'Fase de Grupo {iGrupo}'):
+                                if Imprime(f'Fase de Grupo {iGrupo}', 25):
                                     break
                             except:
                                 continue
                     case 2:
-                        Imprime("Selecao Escolhida")
+                        Imprime("Selecao Escolhida", 25)
                     case 3:
-                        Imprime("Proximos Adversários")
+                        Imprime("Proximos Adversários", 25)
                     case 4:
                         while True:
                             iJogos = input("Qual Grupo voce deseja ver os jogos? : ")
                             try:
-                                if Imprime(f'Jogos do Grupo {iJogos}'):
+                                if Imprime(f'Jogos do Grupo {iJogos}', 40):
                                     break
                             except:
                                 continue
@@ -295,7 +304,7 @@ def iOpcaoMenu():
                         while True:
                             iNumber = input("Qual Grupo voce deseja ver a Classificação? : ")
                             try:
-                                if Imprime(f'Classificacao {iNumber}', 1):
+                                if Imprime(f'Classificacao {iNumber}', 1, 25):
                                     break
                             except:
                                 continue
@@ -317,7 +326,7 @@ def iOpcaoMenu():
                     iRetorna = (input("Deseja voltar para o Menu: [SIM/NAO]: ")).upper()
                     try:
                         if iRetorna in 'SIM':
-                            Imprime("MENU")
+                            Imprime("MENU", 25)
                             break
                         if iRetorna in 'NAO':
                             return
@@ -327,48 +336,146 @@ def iOpcaoMenu():
             continue
 
 
-def Fase_Final():
-    iMata = {
-        'iPrimeiraParte': [],
-        'iSegundaParte': []
-    }
+def Define_Class(SelecaoOne, PlacarOne, PlacarTwo, Selecao_Two, FaseAtual, Jogos_FaseAtual):
+    chaves = list(iClassificados.keys())
+    Indice_Atual = chaves.index(FaseAtual)
+    if PlacarOne != PlacarTwo:
+        Imprime(Jogos_FaseAtual, 25)
+        tabela[Jogos_FaseAtual].clear()
+        if PlacarOne > PlacarTwo:
+            iClassificados[chaves[Indice_Atual+1]].append(SelecaoOne)
+        elif PlacarTwo > PlacarOne:
+            iClassificados[chaves[Indice_Atual+1]].append(Selecao_Two)
+            
+    else:
+        Prorrogacao = ("Prorrogacao:")
+        iExibicao(Jogos_FaseAtual, Prorrogacao)
+        Prorrogacao_Placar1 = randint(1, 2)
+        Prorrogacao_Placar2 = randint(1, 2)
+        Rodada = (f'{SelecaoOne} {Prorrogacao_Placar1} x {Prorrogacao_Placar2} {Selecao_Two}')
+        iExibicao(Jogos_FaseAtual, Rodada )
+        iJogos_FaseFinal[Jogos_FaseAtual].append(Rodada)
+        if Prorrogacao_Placar1 != Prorrogacao_Placar2:
+            if Prorrogacao_Placar1 > Prorrogacao_Placar2:
+                iClassificados[chaves[Indice_Atual+1]].append(SelecaoOne)
+            elif Prorrogacao_Placar2 > Prorrogacao_Placar1:
+                iClassificados[chaves[Indice_Atual+1]].append(Selecao_Two)
+        else:
+            Penalidades = ("Penaltis:")
+            iExibicao(Jogos_FaseAtual, Penalidades)
+            Penalti_Result = iPenalti(SelecaoOne, Selecao_Two, Jogos_FaseAtual)
+            iClassificados[chaves[Indice_Atual+1]].append(Penalti_Result)
+            
+        sleep(2)
+        Imprime(Jogos_FaseAtual, 25)
+        tabela[Jogos_FaseAtual].clear()
+
+
+def iOitavas_Final():
+    Apresentacao = ('Jogos_Oitavas')
     for k in range(1, 9):
-        for c in range(0, 2):
-            Selecao = iClassificados[f'iGrupoP{k}'][c]
-            if k % 2 == 0 and c == 0:
-                iMata['iPrimeiraParte'].append(Selecao)
-            elif k % 2 == 1 and c == 1:
-                iMata['iPrimeiraParte'].append(Selecao)
-            else:
-                iMata['iSegundaParte'].append(Selecao)
-    
-    for i in range(0, 7, 2):
-        iOitavas.append([iMata['iSegundaParte'][i], iMata['iSegundaParte'][i+1]])
-        iOitavas.append([iMata['iPrimeiraParte'][i], iMata['iPrimeiraParte'][i+1]])
+        if k % 2 == 0:
+            Fase_Final['iOitavas'].append([iClassificados[f'iGrupoP{k}'][0], iClassificados[f'iGrupoP{k-1}'][1]])
+        else:
+            Fase_Final['iOitavas'].append([iClassificados[f'iGrupoP{k}'][0], iClassificados[f'iGrupoP{k+1}'][1]])
 
     while True:
-        for k in iOitavas:
+        for k in Fase_Final['iOitavas']:
             P_Selecao = k[0]
             S_Selecao = k[1]
             Placar1 = randint(1, 5)
             Placar2 = randint(1, 5)
             Rodada = (f'{P_Selecao} {Placar1} x {Placar2} {S_Selecao}')
-            iExibicao(f'Jogos Oitavas', Rodada )
-            iJogos_Oitavas['iJogos'].append(Rodada)
-            if Placar1 == Placar2:
+            iExibicao(Apresentacao, Rodada )
+            iJogos_FaseFinal['Jogos_Oitavas'].append(Rodada)
+            Define_Class(P_Selecao, Placar1, Placar2, S_Selecao, "iOitavas", Apresentacao)
+        break
+
+
+def iQuartas_Final():
+    Apresentacao = ('Jogos_Quartas')
+    for i in range(0, 7, 2):
+        Fase_Final['iQuartas'].append([iClassificados['iQuartas'][i], iClassificados['iQuartas'][i+1]])
+
+    while True:
+        for k in Fase_Final['iQuartas']:
+            P_Selecao = k[0]
+            S_Selecao = k[1]
+            Placar1 = randint(1, 5)
+            Placar2 = randint(1, 5)
+            Rodada = (f'{P_Selecao} {Placar1} x {Placar2} {S_Selecao}')
+            iExibicao(Apresentacao, Rodada )
+            iJogos_FaseFinal['Jogos_Quartas'].append(Rodada)
+            Define_Class(P_Selecao, Placar1, Placar2, S_Selecao, "iQuartas", "Jogos_Quartas")
+        break
+
+
+def iSemi_Final():
+    Apresentacao = ('Jogos_Semifinal')
+    for i in range(0, 3, 2):
+        Fase_Final['iSemifinais'].append([iClassificados['iSemifinais'][i], iClassificados['iSemifinais'][i+1]])
+
+    while True:
+        for k in Fase_Final['iSemifinais']:
+            P_Selecao = k[0]
+            S_Selecao = k[1]
+            Placar1 = randint(1, 5)
+            Placar2 = randint(1, 5)
+            Rodada = (f'{P_Selecao} {Placar1} x {Placar2} {S_Selecao}')
+            iExibicao(Apresentacao, Rodada )
+            iJogos_FaseFinal['Jogos_Semifinal'].append(Rodada)
+            sleep(2)
+            Define_Class(P_Selecao, Placar1, Placar2, S_Selecao, "iSemifinais", Apresentacao)
+        break
+
+
+def iFinal():
+    Apresentacao = ('Jogo_Final')
+    for i in range(0, 1, 2):
+        Fase_Final['iFinal'].append([iClassificados['iFinal'][i], iClassificados['iFinal'][i+1]])
+
+    while True:
+        for k in Fase_Final['iFinal']:
+            P_Selecao = k[0]
+            S_Selecao = k[1]
+            Placar1 = randint(1, 5)
+            Placar2 = randint(1, 5)
+            Rodada = (f'{P_Selecao} {Placar1} x {Placar2} {S_Selecao}')
+            iExibicao(Apresentacao, Rodada )
+            iJogos_FaseFinal['Jogos_Final'].append(Rodada)
+            sleep(2)
+            if Placar1 != Placar2:
+                if Placar1 > Placar2:
+                    Resultado = P_Selecao
+                else:
+                    Resultado = S_Selecao
+            else:
                 Prorrogacao = ("Prorrogacao:")
-                iExibicao(f'Jogos Oitavas', Prorrogacao)
+                iExibicao(Apresentacao, Prorrogacao)
                 Prorrogacao_Placar1 = randint(1, 2)
                 Prorrogacao_Placar2 = randint(1, 2)
                 Rodada = (f'{P_Selecao} {Prorrogacao_Placar1} x {Prorrogacao_Placar2} {S_Selecao}')
-                iExibicao(f'Jogos Oitavas', Rodada )
-                iJogos_Oitavas['iJogos'].append(Rodada)
+                iExibicao(Apresentacao, Rodada )
+                iJogos_FaseFinal['Jogos_Final'].append(Rodada)             
                 if Prorrogacao_Placar1 == Prorrogacao_Placar2:
-                    iPenalti(P_Selecao, S_Selecao,"Jogos Oitavas")
-        sleep(2)
-        Imprime("Jogos Oitavas")
+                    Penalidades = ("Penaltis:")
+                    iExibicao(Apresentacao, Penalidades )
+                    Resultado = iPenalti(P_Selecao, S_Selecao, Apresentacao)
+                    iExibicao(Apresentacao, f'{Resultado} Campeão')
+                    Imprime(Apresentacao, 30)
+                    
+            sleep(1)
+            iExibicao(Apresentacao, f'{Resultado} Campeão')
+            Imprime(Apresentacao, 30)
         break
-    
+
+
+def MataMata_Final():
+    iOitavas_Final()
+    iQuartas_Final()
+    iSemi_Final()
+    iFinal()
+
 
 def iPenalti(Selecao1, Selecao2, Fase):
     Penalti_Prorrogacao_Placar1 = 0
@@ -401,10 +508,17 @@ def iPenalti(Selecao1, Selecao2, Fase):
                     iExibicao(Fase, f'{Selecao2}: Errou')
         else:
             break
-        
-    iExibicao(f'Jogos Oitavas', "Final:")
+
+    iExibicao(Fase, "Final:")
     Penalti_Rodada = (f'{Selecao1} {Penalti_Prorrogacao_Placar1} x {Penalti_Prorrogacao_Placar2} {Selecao2}')
-    iExibicao(f'Jogos Oitavas', Penalti_Rodada)
+    iExibicao(Fase, Penalti_Rodada)
+    
+    if Penalti_Prorrogacao_Placar1  > Penalti_Prorrogacao_Placar2:
+        iExibicao(Fase, f'{Selecao1} Venceu')
+        return Selecao1
+    else:
+        iExibicao(Fase, f'{Selecao2} Venceu')
+        return Selecao2
 
     
 def iDiferenca(Penalti_Prorrogacao_Placar1, Penalti_Prorrogacao_Placar2, Contador_Penalti):
@@ -419,4 +533,3 @@ def iDiferenca(Penalti_Prorrogacao_Placar1, Penalti_Prorrogacao_Placar2, Contado
     else:
         return False
 
-    
