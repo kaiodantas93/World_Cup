@@ -56,7 +56,7 @@ Placar1 = 0
 Placar2 = 0
 Prorrogacao_Placar1 = 0
 Prorrogacao_Placar2 = 0
-
+iEscolha_Selecao = ''
 
 def iSelecao():
     for k in range(1, 5):
@@ -78,22 +78,33 @@ def iTabelas():
         Imprime(f'Fase de Grupo {c}', 25)
 
 
-def iGrupo_Sel(iSelecaoEscolhida):
+def iGrupo_Sel():
     for c in range (1,9):
         for selecao in iClassificacao[f'iGrupoP{c}']:
-            if iSelecaoEscolhida in selecao:
+            if iEscolha_Selecao in selecao:
                 grupo = c
                 for k in iClassificacao[f'iGrupoP{grupo}']:
-                    if k in iSelecaoEscolhida:
-                        iExibicao("Selecao Escolhida", iSelecaoEscolhida)
+                    if k in iEscolha_Selecao:
+                        iExibicao("Selecao Escolhida", iEscolha_Selecao)
                     else:                        
                         iExibicao("Proximos Adversários", k)
                 Imprime("Selecao Escolhida", 25)             
                 Imprime("Proximos Adversários", 25)
                 iGrupoCopa()
+                if not iVerificaSelecao():
+                    while True:
+                        iRetorna = (input("Deseja continuar: [SIM/NAO]: ")).upper()
+                        try:
+                            if iRetorna in 'SIM':
+                                break
+                            if iRetorna in 'NAO':
+                                return True
+                        except:
+                            continue
+
                 for c in range(menu.iquant):
                     iExibicao("MENU", f"{c+1}: {menu.opcoes[c]}")
-               
+                
                 if iOpcaoMenu() != 7:
                     return True
                 else:
@@ -101,6 +112,18 @@ def iGrupo_Sel(iSelecaoEscolhida):
                     return True
 
 
+def iVerificaSelecao():
+    for k in range(1 ,9):
+        for Selecao in iClassificados[f'iGrupoP{k}']:
+            if iEscolha_Selecao in Selecao:
+                iExibicao("Classificado", f'{iEscolha_Selecao}')
+                Imprime("Classificado", 40)
+                return True
+    iExibicao("Desclassificado", f'{iEscolha_Selecao}')
+    Imprime("Desclassificado", 40)
+    return False
+    
+    
 def iGrupoCopa():
     iCount = 0
     iPartida = 0
@@ -278,7 +301,7 @@ def iOpcaoMenu():
         iEscolha_Menu = input('Escolha a opcao desejada: ')
         try: 
             iEscolha = int(iEscolha_Menu)
-            if iEscolha > 0 and iEscolha <= 7:
+            if iEscolha > 0 and iEscolha <= 8:
                 match (iEscolha):
                     case 1:
                         while True:
@@ -367,7 +390,7 @@ def Define_Class(SelecaoOne, PlacarOne, PlacarTwo, Selecao_Two, FaseAtual, Jogos
             iClassificados[chaves[Indice_Atual+1]].append(Penalti_Result)
             
         sleep(2)
-        Imprime(Jogos_FaseAtual, 25)
+        Imprime(Jogos_FaseAtual, 40)
         tabela[Jogos_FaseAtual].clear()
 
 
@@ -462,11 +485,11 @@ def iFinal():
                     iExibicao(Apresentacao, Penalidades )
                     Resultado = iPenalti(P_Selecao, S_Selecao, Apresentacao)
                     iExibicao(Apresentacao, f'{Resultado} Campeão')
-                    Imprime(Apresentacao, 30)
+                    Imprime(Apresentacao, 40)
                     
             sleep(1)
             iExibicao(Apresentacao, f'{Resultado} Campeão')
-            Imprime(Apresentacao, 30)
+            Imprime(Apresentacao, 40)
         break
 
 
